@@ -64,7 +64,7 @@ def extract_text_from_pdf(file_path):
 
 for root, folder, files in os.walk(input_folder):
     for file_name in files:
-        if not file_name.endswith("pdf"):
+        if not file_name.endswith("pdf") and not file_name.endswith("docx"):
             continue
         full_file = input_folder + "/" + file_name
         print(full_file)
@@ -75,7 +75,7 @@ for root, folder, files in os.walk(input_folder):
             print ("Error processing", full_file, ". Skipping")
             continue
 
-        output_file = output_folder_text + "/" + file_name + ".txt"
+        output_file = output_folder_text + "/" + re.sub(r"\.(?:pdf|docx?)$", ".txt", file_name)
         with open(output_file, 'w', encoding="utf-8") as fo:
             for t in texts:
                 fo.write(t + "\n")
