@@ -28,7 +28,7 @@ SOFTWARE.
 import os
 import re
 
-MODEL_NO = "00"
+MODEL_NO = "01"
 
 output_folder = "output/" + MODEL_NO
 
@@ -44,4 +44,5 @@ for file_name in os.listdir("../data/annotations/"):
             for l in f:
                 text = re.sub(r'\s+', ' ', l).strip()
                 text = re.sub(r'\n+', '', text)
+                text = re.sub(r'^\d+\.?', '', text).strip()
                 fo.write(f"\t{text}\t\n")
