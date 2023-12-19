@@ -22,6 +22,14 @@
 [![docker](https://img.shields.io/badge/docker-pull-blue.svg?logo=docker&logoColor=white)](https://hub.docker.com/r/harmonydata/harmonywithtika)
 
 
+# How PDFs are extracted
+
+Harmony relies on two libraries to extract questionnaire items from PDFs:
+
+1. Apache Tika - to get plain text
+2. [PDF Table Extractor](https://github.com/ronnywang/pdf-table-extractor) Node.js library by Ronny Wang - to get tabular data
+
+This repo contains the training scripts.
 
 ## ‎😃💁 Who worked on Harmony?
 
