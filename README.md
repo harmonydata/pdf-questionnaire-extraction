@@ -31,6 +31,17 @@ Harmony relies on two libraries to extract questionnaire items from PDFs:
 
 This repo contains the training scripts.
 
+# Preprocessing all the PDFs
+
+Some raw PDFs have been provided.
+
+1. Install all the requirements: `pip install -r requirements.txt`
+2. Download and start Apache Tika in a command line: `java -jar tika-server-standard-2.8.0.jar`
+3. In folder `notebooks`, run `python preprocess_pdf_to_text.py`
+4. In folder `notebooks`, run `python preprocess_pdf_to_tables.py`
+
+This will populate `data/preprocessed_text` and `data/preprocessed_tables`, which can be used to train the model.
+
 ## ‎😃💁 Who worked on Harmony?
 
 Harmony is a collaboration project between [Ulster University](https://ulster.ac.uk/), [University College London](https://ucl.ac.uk/), the [Universidade Federal de Santa Maria](https://www.ufsm.br/), and [Fast Data Science](http://fastdatascience.com/).  Harmony is funded by [Wellcome](https://wellcome.org/) as part of the [Wellcome Data Prize in Mental Health](https://wellcome.org/grant-funding/schemes/wellcome-mental-health-data-prize).

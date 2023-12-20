@@ -25,18 +25,31 @@ SOFTWARE.
 
 '''
 
-# BEFORE RUNNING THIS FILE, DOWNLOAD AND RUN APACHE TIKA ON YOUR COMPUTER
-# e.g. java -jar tika-server-standard-2.8.0.jar 
-
+# Convert all PDFs in folder to tables using RonnyWang library.
 
 import os
 import re
+from time import sleep
 
-from lxml import html
-from tika import parser
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
 
-input_folder = "raw_pdfs"
-output_folder_text = "preprocessed_text"
+options = webdriver.ChromeOptions()
+# options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+
+driver.get("https://ronnywang.github.io/pdf-table-extractor/")
+file_upload = driver.find_element(By.XPATH, value='//input[@id="pdf-file"]')
+
+sleep(2)
+
+input_folder = os.getcwd() + "/raw_pdfs"
+output_folder_tables = "preprocessed_tables"
 
 try:
     os.stat(input_folder)
@@ -44,35 +57,31 @@ except:
     print("Please place the PDFs in ", input_folder)
 
 try:
-    os.stat(output_folder_text)
+    os.stat(output_folder_tables)
 except:
-    os.mkdir(output_folder_text)
-
-
-def extract_text_from_pdf(file_path):
-    parsed = parser.from_file(file_path, xmlContent=True)
-    parsed_xml = parsed["content"]
-
-    et = html.fromstring(parsed_xml)
-    pages = et.getchildren()[1].getchildren()
-
-    return [str(page.text_content()) for page in pages]
-
+    os.mkdir(output_folder_tables)
 
 for root, folder, files in os.walk(input_folder):
     for file_name in files:
-        if not file_name.endswith("pdf") and not file_name.endswith("docx"):
+        if not file_name.endswith("pdf"):
             continue
         full_file = input_folder + "/" + file_name
         print(full_file)
 
-        try:
-            texts = extract_text_from_pdf(full_file)
-        except:
-            print("Error processing", full_file, ". Skipping")
-            continue
+        file_upload.send_keys(full_file)
 
-        output_file = output_folder_text + "/" + re.sub(r"\.(?:pdf|docx?)$", ".txt", file_name)
+        sleep(5)
+
+        parse_result_element = driver.find_element(By.XPATH, value='//textarea[@id="json-result"]')
+        parse_result_json = parse_result_element.get_attribute("value")
+
+        if "Parsing PDF, progress" in parse_result_json:
+            for ctr in range(4):
+                sleep(5)
+                parse_result_json = parse_result_element.get_attribute("value")
+                if "Parsing PDF, progress" not in parse_result_json:
+                    break
+
+        output_file = output_folder_tables + "/" + re.sub(r"\.(?:pdf|docx?)$", ".json", file_name)
         with open(output_file, 'w', encoding="utf-8") as fo:
-            for t in texts:
-                fo.write(t + "\n")
+            fo.write(parse_result_json)
