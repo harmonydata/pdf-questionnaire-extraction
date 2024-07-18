@@ -1,0 +1,3 @@
+[submodule "pdf-questionnaire-extraction-private"]
+	path = pdf-questionnaire-extraction-private
+	url = git@github.com:harmonydata/pdf-questionnaire-extraction-private.git
