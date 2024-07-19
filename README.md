@@ -21,110 +21,11 @@
 [![forks](https://img.shields.io/github/forks/harmonydata/harmony)](https://github.com/harmonydata/harmony/forks)
 [![docker](https://img.shields.io/badge/docker-pull-blue.svg?logo=docker&logoColor=white)](https://hub.docker.com/r/harmonydata/harmonywithtika)
 
-# Data for PDF Kaggle competition
+# How to get started
 
-See our competition on Kaggle at: https://www.kaggle.com/competitions/harmony-pdf-and-word-questionnaires-extract
+Run `train.py` to create the CRF model.
 
-Read about our Kaggle competition [on our blog](https://harmonydata.ac.uk/harmony-on-kaggle/).
-
-# Entering the Kaggle competition
-
-Requirements: Python 3.10 or greater
-
-1. Create an account on [Kaggle](https://www.kaggle.com/).
-
-2. Install Kaggle on your computer:
-
-```
-pip install kaggle
-```
-
-3. On the Kaggle website, download your `kaggle.json` file and put it in your home folder under `.kaggle/kaggle.json`.
-
-4. Download and unzip the competition data:
-
-```
-kaggle competitions download -c harmony-pdf-and-word-questionnaires-extract-v2
-unzip harmony-pdf-and-word-questionnaires-extract-v2.zip 
-```
-
-5. Run [create_sample_submission.py](https://github.com/harmonydata/pdf-questionnaire-extraction/blob/main/data/create_sample_submission.py) in the folder containing your data to create your train and test predictions:
-
-To generate predictions for the training data and write to train_predictions.csv:
-
-```
-python create_sample_submission.py train
-```
-
-To evaluate the train predictions:
-
-```
-python evaluate_train_results.py
-```
-
-6. To modify the prediction logic or inject your own model, you can edit the function `dummy_extract_questions`.
-
-7. To generate predictions for the test data and write to submission.csv:
-
-```
-python create_sample_submission.py test
-```
-
-8. Submit your CSV file to Kaggle
-
-```
-kaggle competitions submit -c harmony-pdf-and-word-questionnaires-extract-v2 -f submission.csv -m "Message"
-```
-
-# Testing the existing models
-
-Go into `notebooks` folder and run
-
-```
-python model_0x_baseline_extract_everything.py
-```
-
-to run each model in that folder.
-
-Then to evaluate a model, run:
-
-```
-python evaluate.py 0x
-```
-
-Here are the scores of model 01 and model 02, for comparison:
-
-```
-Model 01 (baseline, just extracting text)
-Mean precision = 0.11, mean recall = 0.28
-	Precision over all instances = 0.05, recall over all instances = 0.30
-
-Model 02 (current Harmony 0.5.0)
-Mean precision = 0.52, mean recall = 0.53
-	Precision over all instances = 0.37, recall over all instances = 0.44
-```
-
-# How PDFs are extracted
-
-Harmony relies on two libraries to extract questionnaire items from PDFs:
-
-1. Apache Tika - to get plain text
-2. [PDF Table Extractor](https://github.com/ronnywang/pdf-table-extractor) Node.js library by Ronny Wang - to get tabular data
-
-This repo contains the training data and training scripts.
-
-The withheld test annotations are in this private repo: https://github.com/harmonydata/pdf-questionnaire-extraction-test-annotations
-
-# Preprocessing all the PDFs
-
-Some raw PDFs have been provided.
-
-1. Install all the requirements: `pip install -r requirements.txt`
-2. Download and start Apache Tika in a command line: `java -jar tika-server-standard-2.8.0.jar`
-3. In folder `notebooks`, run `python preprocess_pdf_to_text.py`
-4. In folder `notebooks`, run `python preprocess_pdf_to_tables.py`
-
-This will populate `data/preprocessed_text` and `data/preprocessed_tables`, which can be used to train the model.
+You will need the training data, please contact Thomas Wood for the data.
 
 ## ‎😃💁 Who worked on Harmony?
 
